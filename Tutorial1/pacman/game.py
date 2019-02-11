@@ -693,7 +693,7 @@ class Game:
             if agent == self.agents[0]:
                 info = self.agents[0].printLineData(observation)
                 f.write(str(info))
-                f.write("\n")   
+                f.write("\n")  
             
             # Execute the action
             self.moveHistory.append( (agentIndex, action) )

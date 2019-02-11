@@ -261,17 +261,56 @@ class BasicAgentAA(BustersAgent):
 
    
             
-        
+    #Metodo modificado para un comportamiento inteligente
     def chooseAction(self, gameState):
         self.countActions = self.countActions + 1
         self.printInfo(gameState)
+        #Obtenemos el fantasma mas cercano
+        fantasmas = list(gameState.getLivingGhosts())
+        fantasmasvivos=list()
+        distancia=list()
+        fantasmasvivospos=list()
+        for x in range(0,gameState.getNumAgents()):
+            if fantasmas[x] is True:
+                fantasmasvivos.append(fantasmas[x])
+                distancia.append(gameState.data.ghostDistances[x-1])
+                fantasmasvivospos.append(gameState.getGhostPositions()[x-1])
+
+        fantasma = distancia.index(min(distancia))
+        
+        print("Me acerco al fantasma "+ str(fantasma))
+        print(gameState.getPacmanPosition())
+        print(fantasmasvivospos[fantasma])
         move = Directions.STOP
         legal = gameState.getLegalActions(0) ##Legal position from the pacman
-        move_random = random.randint(0, 3)
-        if   ( move_random == 0 ) and Directions.WEST in legal:  move = Directions.WEST
-        if   ( move_random == 1 ) and Directions.EAST in legal: move = Directions.EAST
-        if   ( move_random == 2 ) and Directions.NORTH in legal:   move = Directions.NORTH
-        if   ( move_random == 3 ) and Directions.SOUTH in legal: move = Directions.SOUTH
+        distancias=[0,0,0,0,0]
+        print (type(legal))
+        for x in legal:
+            if(x is Directions.WEST):
+                distancias[0] = util.manhattanDistance(fantasmasvivospos[fantasma], (gameState.getPacmanPosition()[0]-1,gameState.getPacmanPosition()[1]))
+            if(x is Directions.STOP):
+                distancias[1] = util.manhattanDistance(fantasmasvivospos[fantasma], (gameState.getPacmanPosition()[0],gameState.getPacmanPosition()[1]))
+            if(x is Directions.EAST):
+                distancias[2] = util.manhattanDistance(fantasmasvivospos[fantasma], (gameState.getPacmanPosition()[0]+1,gameState.getPacmanPosition()[1]))
+            if(x is Directions.NORTH):
+                distancias[3] = util.manhattanDistance(fantasmasvivospos[fantasma], (gameState.getPacmanPosition()[0],gameState.getPacmanPosition()[1]+1))
+            if(x is Directions.SOUTH):
+                distancias[4] = util.manhattanDistance(fantasmasvivospos[fantasma], (gameState.getPacmanPosition()[0],gameState.getPacmanPosition()[1]-1))    
+        print(distancias)
+
+        
+        distancianew = distancias.index(min(distancias))
+        print(distancianew)
+        if distancianew ==0:
+            move=Directions.WEST
+        if distancianew ==2:
+            move=Directions.EAST
+        if distancianew ==3:
+            move=Directions.NORTH
+        if distancianew ==4:
+            move=Directions.SOUTH    
+        print(move)
+
         return move
 
     def printLineData(self, gameState):
