@@ -276,6 +276,11 @@ class BasicAgentAA(BustersAgent):
 
     def printLineData(self, gameState):
         #En este metodo escribiremos en un fichero lo que consideramos importante
-        print("Holaaa")
-        info = str(gameState.getPacmanPosition()) + ";"  #gameState.getLegalPacmanActions() + ";" + gameState.getLivingGhosts() + ";" + gameState.getGhostPositions()
+        info = list(gameState.getPacmanPosition())
+        aux = list (gameState.getLegalActions())
+        info+=aux
+        aux= list(gameState.getLivingGhosts())
+        info+=aux
+        aux= list(gameState.getGhostPositions())
+        info+=aux
         return info

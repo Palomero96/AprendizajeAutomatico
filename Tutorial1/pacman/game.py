@@ -24,6 +24,7 @@ import time, os
 import traceback
 import sys
 
+
 #######################
 # Parts worth reading #
 #######################
@@ -44,6 +45,7 @@ class Agent:
         must return an action from Directions.{North, South, East, West, Stop}
         """
         raiseNotDefined()
+
 
 class Directions:
     NORTH = 'North'
@@ -568,8 +570,9 @@ class Game:
         """
         self.display.initialize(self.state.data)
         self.numMoves = 0
-        f = open("Info.txt",'w+')
-        f.seek(0,2)
+        f = open("Info.txt",'a+')
+        f.seek(0,2) #Colocamos el puntero en la ultima posicion
+        #f.write("\n Nuevo Juego \n")
 
         ###self.display.initialize(self.state.makeObservation(1).data)
         # inform learning agents of the game start
@@ -687,9 +690,10 @@ class Game:
             else:
                 action = agent.getAction(observation)
             self.unmute()
-            
-            info = printLineData(observation)
-            f.write(info + "\n")
+            if agent == self.agents[0]:
+                info = self.agents[0].printLineData(observation)
+                f.write(str(info))
+                f.write("\n")   
             
             # Execute the action
             self.moveHistory.append( (agentIndex, action) )
@@ -732,3 +736,4 @@ class Game:
                     self.unmute()
                     return
         self.display.finish()
+        f.close()
