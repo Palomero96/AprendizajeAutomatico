@@ -258,7 +258,9 @@ class BasicAgentAA(BustersAgent):
         print "Map:  \n", gameState.getWalls()
         # Puntuacion
         print "Score: ", gameState.getScore()
-        
+
+   
+            
         
     def chooseAction(self, gameState):
         self.countActions = self.countActions + 1
@@ -271,3 +273,9 @@ class BasicAgentAA(BustersAgent):
         if   ( move_random == 2 ) and Directions.NORTH in legal:   move = Directions.NORTH
         if   ( move_random == 3 ) and Directions.SOUTH in legal: move = Directions.SOUTH
         return move
+
+    def printLineData(self, gameState):
+        #En este metodo escribiremos en un fichero lo que consideramos importante
+        print("Holaaa")
+        info = str(gameState.getPacmanPosition()) + ";"  #gameState.getLegalPacmanActions() + ";" + gameState.getLivingGhosts() + ";" + gameState.getGhostPositions()
+        return info

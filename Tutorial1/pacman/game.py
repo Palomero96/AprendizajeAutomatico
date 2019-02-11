@@ -568,6 +568,8 @@ class Game:
         """
         self.display.initialize(self.state.data)
         self.numMoves = 0
+        f = open("Info.txt",'w+')
+        f.seek(0,2)
 
         ###self.display.initialize(self.state.makeObservation(1).data)
         # inform learning agents of the game start
@@ -685,7 +687,10 @@ class Game:
             else:
                 action = agent.getAction(observation)
             self.unmute()
-
+            
+            info = printLineData(observation)
+            f.write(info + "\n")
+            
             # Execute the action
             self.moveHistory.append( (agentIndex, action) )
             if self.catchExceptions:
@@ -713,7 +718,7 @@ class Game:
 
             if _BOINC_ENABLED:
                 boinc.set_fraction_done(self.getProgress())
-
+            
         # inform a learning agent of the game result
         for agentIndex, agent in enumerate(self.agents):
             if "final" in dir( agent ) :
