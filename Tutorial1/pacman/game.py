@@ -690,10 +690,12 @@ class Game:
             else:
                 action = agent.getAction(observation)
             self.unmute()
+            #Escribimos en el archivo
             if agent == self.agents[0]:
-                info = self.agents[0].printLineData(observation)
-                f.write(str(info))
-                f.write("\n")  
+                if "printLineData" in dir(self.agents[0]):
+                    info = self.agents[0].printLineData(observation)
+                    f.write(str(info))
+                    f.write("\n")
             
             # Execute the action
             self.moveHistory.append( (agentIndex, action) )
@@ -722,7 +724,9 @@ class Game:
 
             if _BOINC_ENABLED:
                 boinc.set_fraction_done(self.getProgress())
-            
+
+         
+
         # inform a learning agent of the game result
         for agentIndex, agent in enumerate(self.agents):
             if "final" in dir( agent ) :
