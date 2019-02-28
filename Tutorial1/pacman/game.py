@@ -691,10 +691,15 @@ class Game:
                 action = agent.getAction(observation)
             self.unmute()
             #Escribimos en el archivo
+
             if agent == self.agents[0]:
+                print (action)
                 if "printLineData" in dir(self.agents[0]):
                     info = self.agents[0].printLineData(observation)
-                    f.write(str(info))
+
+                    #info = info.join(','.join(action))
+                    f.write(str(info) + "," + str(action))
+
                     f.write("\n")
             
             # Execute the action
