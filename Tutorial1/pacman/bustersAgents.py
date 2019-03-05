@@ -115,7 +115,26 @@ class BustersKeyboardAgent(BustersAgent, KeyboardAgent):
 
     def chooseAction(self, gameState):
         return KeyboardAgent.getAction(self, gameState)
-
+        
+    def printLineData(self, gameState):
+        #En este metodo escribiremos en un fichero lo que consideramos importante
+        info = list(gameState.getPacmanPosition())
+        aux = list (gameState.getLegalActions())
+        info+=aux
+        aux = list(gameState.getLivingGhosts())
+        info+= aux
+        lista= list(gameState.getGhostPositions())
+        for index in lista:
+            x = index[0]
+            y = index[1] 
+            info.append(x)
+            info.append(y) 
+        lista= list(gameState.data.ghostDistances)
+        for distancia in lista:
+            info.append(distancia)
+    
+        str1 = ','.join(str(e) for e in info)   
+        return str1
 from distanceCalculator import Distancer
 from game import Actions
 from game import Directions
