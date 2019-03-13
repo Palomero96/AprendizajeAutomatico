@@ -120,8 +120,25 @@ class BustersKeyboardAgent(BustersAgent, KeyboardAgent):
         #En este metodo escribiremos en un fichero lo que consideramos importante
         info = list(gameState.getPacmanPosition())
         aux = list (gameState.getLegalActions())
-        info+=aux
+        if  Directions.WEST in aux: 
+            info+="1"
+        else:
+            info+="0"
+        if  Directions.EAST in aux:
+            info+="1"
+        else:
+            info+="0"
+
+        if  Directions.NORTH in aux:
+            info+="1"
+        else:
+            info+="0"
+        if Directions.SOUTH in aux:
+            info+="1"
+        else:
+            info+="0"    
         aux = list(gameState.getLivingGhosts())
+        aux.pop() 
         info+= aux
         lista= list(gameState.getGhostPositions())
         for index in lista:
@@ -131,10 +148,14 @@ class BustersKeyboardAgent(BustersAgent, KeyboardAgent):
             info.append(y) 
         lista= list(gameState.data.ghostDistances)
         for distancia in lista:
-            info.append(distancia)
+            if str(distancia)=="None":
+                info+="0"
+            else:    
+                info.append(distancia)
     
         str1 = ','.join(str(e) for e in info)   
         return str1
+        
 from distanceCalculator import Distancer
 from game import Actions
 from game import Directions
@@ -337,8 +358,27 @@ class BasicAgentAA(BustersAgent):
         #En este metodo escribiremos en un fichero lo que consideramos importante
         info = list(gameState.getPacmanPosition())
         aux = list (gameState.getLegalActions())
-        info+=aux
+        if  Directions.WEST in aux: 
+            info+=1
+        else:
+            info+=0
+        if  Directions.EAST in aux:
+            info+=1
+        else:
+            info+=0
+
+        if  Directions.NORTH in aux:
+            info+=1
+        else:
+            info+=0
+        if Directions.SOUTH in aux:
+            info+=1
+        else:
+            info+=0
+        
+        info+=1 #Siempre va a poder hacer el movimiento de STOP    
         aux = list(gameState.getLivingGhosts())
+        aux.pop() 
         info+= aux
         lista= list(gameState.getGhostPositions())
         for index in lista:
