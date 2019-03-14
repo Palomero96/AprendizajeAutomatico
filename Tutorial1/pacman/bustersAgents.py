@@ -138,7 +138,7 @@ class BustersKeyboardAgent(BustersAgent, KeyboardAgent):
         else:
             info+="0"    
         aux = list(gameState.getLivingGhosts())
-        aux.pop() 
+        aux.pop(0) 
         info+= aux
         lista= list(gameState.getGhostPositions())
         for index in lista:
@@ -378,7 +378,7 @@ class BasicAgentAA(BustersAgent):
         
         info+=1 #Siempre va a poder hacer el movimiento de STOP    
         aux = list(gameState.getLivingGhosts())
-        aux.pop() 
+        aux.pop(0) 
         info+= aux
         lista= list(gameState.getGhostPositions())
         for index in lista:
