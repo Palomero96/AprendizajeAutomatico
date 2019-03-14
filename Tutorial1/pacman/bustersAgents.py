@@ -388,7 +388,11 @@ class BasicAgentAA(BustersAgent):
             info.append(y) 
         lista= list(gameState.data.ghostDistances)
         for distancia in lista:
-            info.append(distancia)
+            if str(distancia)=="None":
+                info+="0"
+            else:    
+                info.append(distancia)
+    
     
         str1 = ','.join(str(e) for e in info)   
         return str1

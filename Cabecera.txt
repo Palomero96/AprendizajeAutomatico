@@ -1,0 +1,26 @@
+@relation pacman-data
+    @ATTRIBUTE posx NUMERIC 
+    @ATTRIBUTE posy NUMERIC
+    @ATTRIBUTE LegalWest {0, 1}
+    @ATTRIBUTE LegalEast {0, 1}
+    @ATTRIBUTE LegalNorth {0, 1}
+    @ATTRIBUTE LegalSouth {0, 1}
+    @ATTRIBUTE GUno {True, False}
+    @ATTRIBUTE GDos {True, False}
+    @ATTRIBUTE GTres {True, False}
+    @ATTRIBUTE GCuatro {True, False}
+    @ATTRIBUTE posxGUno NUMERIC 
+    @ATTRIBUTE posyGUno NUMERIC
+    @ATTRIBUTE posxGDos NUMERIC 
+    @ATTRIBUTE posyGDos NUMERIC
+    @ATTRIBUTE posxGTres NUMERIC 
+    @ATTRIBUTE posyGTres NUMERIC
+    @ATTRIBUTE posxGCuatro NUMERIC 
+    @ATTRIBUTE posyGCuatro NUMERIC
+    @ATTRIBUTE distGUno NUMERIC 
+    @ATTRIBUTE distGDos NUMERIC
+    @ATTRIBUTE distGTres NUMERIC 
+    @ATTRIBUTE distGCuatro NUMERIC
+    @ATTRIBUTE class {West, East, South, North, Stop}
+
+@data
