@@ -615,6 +615,7 @@ class Game:
         agentIndex = self.startingIndex
         numAgents = len( self.agents )
         step = 0
+        estado=""
         while not self.gameOver:
             # Fetch the next agent
             agent = self.agents[agentIndex]
@@ -691,17 +692,24 @@ class Game:
                 action = agent.getAction(observation)
             self.unmute()
             #Escribimos en el archivo
-
+        
             if agent == self.agents[0]:
-                print (action)
-                if "printLineData" in dir(self.agents[0]):
-                    info = self.agents[0].printLineData(observation)
-
-                    #info = info.join(','.join(action))
-                    f.write(str(info) + "," + str(action))
-
+                if step<=1:
+                    print ("Paso 0")
+                    if "printLineData" in dir(self.agents[0]):
+                        info = self.agents[0].printLineData(observation)
+                        estado=str(info) + "," + str(action)      
+                else:
+                    print ("Paso Distinto 0")
+                    score=self.agents[0].score(observation)
+                    escribo       = str(estado) + "," + str(score)
+                    f.write(escribo)
                     f.write("\n")
-            
+                    if "printLineData" in dir(self.agents[0]):
+                        info = self.agents[0].printLineData(observation)
+                        info=str(info) + "," + str(action)
+                        estado=str(info) + "," + str(action)
+                        
             # Execute the action
             self.moveHistory.append( (agentIndex, action) )
             if self.catchExceptions:

@@ -300,6 +300,8 @@ class BasicAgentAA(BustersAgent):
         # Puntuacion
         print "Score: ", gameState.getScore()
 
+    def score(self, gameState):
+        return gameState.getScore()
    
             
     #Metodo modificado para un comportamiento inteligente
@@ -390,6 +392,8 @@ class BasicAgentAA(BustersAgent):
                 info+="0"
             else:    
                 info.append(distancia)
-    
-        str1 = ','.join(str(e) for e in info)   
+        info.append(gameState.getDistanceNearestFood())
+        info.append(gameState.getScore())
+        str1 = ','.join(str(e) for e in info)
         return str1
+        
