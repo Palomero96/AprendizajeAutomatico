@@ -707,7 +707,6 @@ class Game:
                     f.write("\n")
                     if "printLineData" in dir(self.agents[0]):
                         info = self.agents[0].printLineData(observation)
-                        info=str(info) + "," + str(action)
                         estado=str(info) + "," + str(action)
                         
             # Execute the action
