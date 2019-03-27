@@ -109,13 +109,29 @@ class BustersKeyboardAgent(BustersAgent, KeyboardAgent):
     def __init__(self, index = 0, inference = "KeyboardInference", ghostAgents = None):
         KeyboardAgent.__init__(self, index)
         BustersAgent.__init__(self, index, inference, ghostAgents)
+        self.fantasma=0
 
     def getAction(self, gameState):
         return BustersAgent.getAction(self, gameState)
 
     def chooseAction(self, gameState):
+        fantasmas = list(gameState.getLivingGhosts())
+        fantasmasvivos=list()
+        distancia=list()
+        fantasmasvivospos=list()
+        #Buscamos los fantasmas que estan vivos
+        for x in range(0,gameState.getNumAgents()):
+            if fantasmas[x] is True:
+                fantasmasvivos.append(fantasmas[x])
+                distancia.append(gameState.data.ghostDistances[x-1])
+                fantasmasvivospos.append(gameState.getGhostPositions()[x-1])
+        #Obtenemos el fantasma mas cercano
+        fantasma = distancia.index(min(distancia))
         return KeyboardAgent.getAction(self, gameState)
-        
+
+    def score(self, gameState):
+        return gameState.getScore()
+
     def printLineData(self, gameState):
         #En este metodo escribiremos en un fichero lo que consideramos importante
         info = list(gameState.getPacmanPosition())
@@ -248,7 +264,8 @@ class BasicAgentAA(BustersAgent):
         self.distancer = Distancer(gameState.data.layout, False)
         self.countActions = 0
         self.Random=False #Boolean para controlar cuando es random
-
+        self.fantasma=0
+        self.pasosaleatorios=0
         
     ''' Example of counting something'''
     def countFood(self, gameState):
@@ -348,12 +365,16 @@ class BasicAgentAA(BustersAgent):
         if move not in legal:
             self.Random=True
         if self.Random is True:
+            self.pasosaleatorios+=1
             move= Directions.STOP
             move_random = random.randint(0, 3)
             if   ( move_random == 0 ) and Directions.WEST in legal:  move = Directions.WEST
             if   ( move_random == 1 ) and Directions.EAST in legal: move = Directions.EAST
             if   ( move_random == 2 ) and Directions.NORTH in legal:   move = Directions.NORTH
-            if   ( move_random == 3 ) and Directions.SOUTH in legal: move = Directions.SOUTH     
+            if   ( move_random == 3 ) and Directions.SOUTH in legal: move = Directions.SOUTH 
+            if self.pasosaleatorios==8:
+                self.pasosaleatorios=0
+                self.Random=False
         return move
 
     def printLineData(self, gameState):
@@ -392,6 +413,7 @@ class BasicAgentAA(BustersAgent):
                 info+="0"
             else:    
                 info.append(distancia)
+        info.append(self.fantasma)
         info.append(gameState.getDistanceNearestFood())
         info.append(gameState.getScore())
         str1 = ','.join(str(e) for e in info)
