@@ -570,7 +570,7 @@ class Game:
         """
         self.display.initialize(self.state.data)
         self.numMoves = 0
-        f = open("Info.txt",'a+')
+        f = open("Entrenamiento.txt",'a+')
         f.seek(0,2) #Colocamos el puntero en la ultima posicion
         #f.write("\n Nuevo Juego \n")
 
