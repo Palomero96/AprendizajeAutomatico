@@ -6,5 +6,5 @@ python busters.py -p BasicAgentAA -g RandomGhost -l oneHunt
 python busters.py -p BasicAgentAA -l oneHunt
 python busters.py -p BasicAgentAA -g RandomGhost -l smallHunt
 python busters.py -p BasicAgentAA -l smallHunt
-python busters.py -p BasicAgentAA -g RandomGhost -l classic
-python busters.py -p BasicAgentAA -l classic
+python busters.py -p BasicAgentAA -g RandomGhost -l testClassic
+python busters.py -p BasicAgentAA -l testClassic

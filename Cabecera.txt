@@ -22,6 +22,7 @@
     @ATTRIBUTE distGTres NUMERIC 
     @ATTRIBUTE distGCuatro NUMERIC
     @ATTRIBUTE fantasmaCercano NUMERIC
+    @ATTRIBUTE movaleatorio {0, 1}
     @ATTRIBUTE distComida NUMERIC
     @ATTRIBUTE score NUMERIC
     @ATTRIBUTE class {West, East, South, North, Stop}

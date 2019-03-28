@@ -266,6 +266,7 @@ class BasicAgentAA(BustersAgent):
         self.Random=False #Boolean para controlar cuando es random
         self.fantasma=0
         self.pasosaleatorios=0
+        self.movaleatorio=0
         
     ''' Example of counting something'''
     def countFood(self, gameState):
@@ -325,6 +326,7 @@ class BasicAgentAA(BustersAgent):
     def chooseAction(self, gameState):
         self.countActions = self.countActions + 1
         self.printInfo(gameState)
+        
         #Obtenemos el fantasma mas cercano
         fantasmas = list(gameState.getLivingGhosts())
         fantasmasvivos=list()
@@ -365,6 +367,7 @@ class BasicAgentAA(BustersAgent):
         if move not in legal:
             self.Random=True
         if self.Random is True:
+            self.movaleatorio=1
             self.pasosaleatorios+=1
             move= Directions.STOP
             move_random = random.randint(0, 3)
@@ -374,6 +377,7 @@ class BasicAgentAA(BustersAgent):
             if   ( move_random == 3 ) and Directions.SOUTH in legal: move = Directions.SOUTH 
             if self.pasosaleatorios==8:
                 self.pasosaleatorios=0
+                self.movaleatorio=0
                 self.Random=False
         return move
 
@@ -414,6 +418,7 @@ class BasicAgentAA(BustersAgent):
             else:    
                 info.append(distancia)
         info.append(self.fantasma)
+        info.append(self.movaleatorio)
         info.append(gameState.getDistanceNearestFood())
         info.append(gameState.getScore())
         str1 = ','.join(str(e) for e in info)
