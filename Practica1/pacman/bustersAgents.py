@@ -16,6 +16,7 @@ import util
 from game import Agent
 from game import Directions
 from keyboardAgents import KeyboardAgent
+from wekaI import Weka
 import inference
 import busters
 
@@ -71,6 +72,8 @@ class BustersAgent:
         self.inferenceModules = [inferenceType(a) for a in ghostAgents]
         self.observeEnable = observeEnable
         self.elapseTimeEnable = elapseTimeEnable
+        self.weka = Weka()
+        self.weka.start_jvm()
 
     def registerInitialState(self, gameState):
         "Initializes beliefs and inference modules"
@@ -100,8 +103,44 @@ class BustersAgent:
         return self.chooseAction(gameState)
 
     def chooseAction(self, gameState):
-        "By default, a BustersAgent just stops.  This should be overridden."
-        return Directions.STOP
+        info = self.printLineData(gameState)
+        action = self.weka.predict("./j48.model", info, "./Training.arff")
+        return action
+
+    def printLineData(self, gameState):
+        info =list()
+        aux = list (gameState.getLegalActions())
+        if  Directions.WEST in aux: 
+            info+="1"
+        else:
+            info+="0"
+        if  Directions.EAST in aux:
+            info+="1"
+        else:
+            info+="0"
+
+        if  Directions.NORTH in aux:
+            info+="1"
+        else:
+            info+="0"
+        if Directions.SOUTH in aux:
+            info+="1"
+        else:
+            info+="0"    
+        lista= list(gameState.data.ghostDistances)
+        for distancia in lista:
+            if str(distancia)=="None":
+                info+="0"
+            else:    
+                info.append(distancia)
+        lista= list(gameState.getGhostPositions())
+        for index in lista:
+            x = index[0]- gameState.getPacmanPosition()[0]
+            y = index[1] - gameState.getPacmanPosition()[1]
+            info.append(x)
+            info.append(y) 
+        #str1 = ','.join(str(e) for e in info)
+        return info
 
 class BustersKeyboardAgent(BustersAgent, KeyboardAgent):
     "An agent controlled by the keyboard that displays beliefs about ghost positions."
@@ -383,7 +422,7 @@ class BasicAgentAA(BustersAgent):
 
     def printLineData(self, gameState):
        #En este metodo escribiremos en un fichero lo que consideramos importante
-        info = list(gameState.getPacmanPosition())
+        #info = list(gameState.getPacmanPosition())
         aux = list (gameState.getLegalActions())
         if  Directions.WEST in aux: 
             info+="1"
@@ -402,25 +441,24 @@ class BasicAgentAA(BustersAgent):
             info+="1"
         else:
             info+="0"    
-        aux = list(gameState.getLivingGhosts())
-        aux.pop(0) 
-        info+= aux
-        lista= list(gameState.getGhostPositions())
-        for index in lista:
-            x = index[0]
-            y = index[1] 
-            info.append(x)
-            info.append(y) 
+        info+= aux 
         lista= list(gameState.data.ghostDistances)
         for distancia in lista:
             if str(distancia)=="None":
                 info+="0"
             else:    
                 info.append(distancia)
-        info.append(self.fantasma)
-        info.append(self.movaleatorio)
-        info.append(gameState.getDistanceNearestFood())
-        info.append(gameState.getScore())
+        lista= list(gameState.getGhostPositions())
+        for index in lista:
+            x = index[0]-gameState.getPacmanPosition()[0]
+            y = index[1] -gameState.getPacmanPosition()[1]
+            info.append(x)
+            info.append(y) 
+       
+        #info.append(self.fantasma)
+        #info.append(self.movaleatorio)
+        #info.append(gameState.getDistanceNearestFood())
+        #info.append(gameState.getScore())
         str1 = ','.join(str(e) for e in info)
         return str1
         
