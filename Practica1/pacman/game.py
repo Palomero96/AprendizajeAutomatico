@@ -694,20 +694,26 @@ class Game:
             #Escribimos en el archivo
         
             if agent == self.agents[0]:
-                if step<=1:
-                    print ("Paso 0")
-                    if "printLineData" in dir(self.agents[0]):
-                        info = self.agents[0].printLineData(observation)
-                        estado=str(info) + "," + str(action)      
-                else:
-                    print ("Paso Distinto 0")
-                    score=self.agents[0].score(observation)
-                    escribo       = str(estado) + "," + str(score)
-                    f.write(escribo)
+                if "printLineData" in dir(self.agents[0]):
+                    info = self.agents[0].printLineData(observation)
+                    estado=str(info) + "," + str(action) 
+                    f.write(estado)
                     f.write("\n")
-                    if "printLineData" in dir(self.agents[0]):
-                        info = self.agents[0].printLineData(observation)
-                        estado=str(info) + "," + str(action)
+
+                #if step<=1:
+                    #print ("Paso 0")
+                    #if "printLineData" in dir(self.agents[0]):
+                        #info = self.agents[0].printLineData(observation)
+                        #estado=str(info) + "," + str(action)      
+                #else:
+                    #print ("Paso Distinto 0")
+                   #score=self.agents[0].score(observation)
+                    #escribo       = str(estado) + "," + str(score)
+                   #f.write(escribo)
+                    #f.write("\n")
+                   # if "printLineData" in dir(self.agents[0]):
+                       # info = self.agents[0].printLineData(observation)
+                        #estado=str(info) + "," + str(action)
                         
             # Execute the action
             self.moveHistory.append( (agentIndex, action) )
@@ -751,5 +757,7 @@ class Game:
                     self._agentCrash(agentIndex)
                     self.unmute()
                     return
+        self.weka.stop_jvm()
+
         self.display.finish()
         f.close()
