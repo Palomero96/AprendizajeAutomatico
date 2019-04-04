@@ -1,4 +1,5 @@
-python busters.py -p BasicAgentAA -g RandomGhost -l openHunt
+python busters.py -p BusterAgent -g RandomGhost -l openHunt
+
 python busters.py -p BasicAgentAA -l openHunt
 python busters.py -p BasicAgentAA -g RandomGhost -l newmap
 python busters.py -p BasicAgentAA -l newmap

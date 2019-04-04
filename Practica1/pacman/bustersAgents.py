@@ -19,6 +19,7 @@ from keyboardAgents import KeyboardAgent
 from wekaI import Weka
 import inference
 import busters
+import random
 
 class NullGraphics:
     "Placeholder for graphics"
@@ -72,8 +73,8 @@ class BustersAgent:
         self.inferenceModules = [inferenceType(a) for a in ghostAgents]
         self.observeEnable = observeEnable
         self.elapseTimeEnable = elapseTimeEnable
-       # self.weka = Weka()
-        #self.weka.start_jvm()
+        self.weka = Weka()
+        self.weka.start_jvm()
 
     def registerInitialState(self, gameState):
         "Initializes beliefs and inference modules"
@@ -103,8 +104,15 @@ class BustersAgent:
         return self.chooseAction(gameState)
 
     def chooseAction(self, gameState):
-       # info = self.printLineData(gameState)
-       # action = self.weka.predict("./j48.model", info, "./Training.arff")
+        info = self.printLineData(gameState)
+        action = self.weka.predict("./Modelos/j48Heuristico.model", info, "./Ficheros/Fase2Final/training_tutorial1.arff")
+        #Tenemos que comprobar si es la accion es legal o no
+        print (action)
+        aux = list (gameState.getLegalActions())
+        if action not in aux:
+            print ("Ilegal")
+            #En caso de no ser legal tendremos que coger una aleatoria
+            action = random.choice(aux)
         return action
 
     def printLineData(self, gameState):
@@ -192,23 +200,21 @@ class BustersKeyboardAgent(BustersAgent, KeyboardAgent):
             info+="1"
         else:
             info+="0"    
-        aux = list(gameState.getLivingGhosts())
-        aux.pop(0) 
-        info+= aux
-        lista= list(gameState.getGhostPositions())
-        for index in lista:
-            x = index[0]
-            y = index[1] 
-            info.append(x)
-            info.append(y) 
+         
         lista= list(gameState.data.ghostDistances)
         for distancia in lista:
             if str(distancia)=="None":
                 info+="0"
             else:    
                 info.append(distancia)
-    
-        str1 = ','.join(str(e) for e in info)   
+        lista= list(gameState.getGhostPositions())
+        for index in lista:
+            x = index[0]-gameState.getPacmanPosition()[0]
+            y = index[1] -gameState.getPacmanPosition()[1]
+            info.append(x)
+            info.append(y) 
+        info.append(gameState.getScore())
+        str1 = ','.join(str(e) for e in info)
         return str1
         
 from distanceCalculator import Distancer
@@ -441,7 +447,7 @@ class BasicAgentAA(BustersAgent):
             info+="1"
         else:
             info+="0"    
-        info+= aux 
+         
         lista= list(gameState.data.ghostDistances)
         for distancia in lista:
             if str(distancia)=="None":

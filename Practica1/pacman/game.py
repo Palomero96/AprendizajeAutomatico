@@ -707,12 +707,12 @@ class Game:
                         #estado=str(info) + "," + str(action)      
                 #else:
                     #print ("Paso Distinto 0")
-                   #score=self.agents[0].score(observation)
+                   # score=self.agents[0].score(observation)
                     #escribo       = str(estado) + "," + str(score)
-                   #f.write(escribo)
+                    #f.write(escribo)
                     #f.write("\n")
-                   # if "printLineData" in dir(self.agents[0]):
-                       # info = self.agents[0].printLineData(observation)
+                    #if "printLineData" in dir(self.agents[0]):
+                        #info = self.agents[0].printLineData(observation)
                         #estado=str(info) + "," + str(action)
                         
             # Execute the action
