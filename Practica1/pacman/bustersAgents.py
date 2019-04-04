@@ -72,8 +72,8 @@ class BustersAgent:
         self.inferenceModules = [inferenceType(a) for a in ghostAgents]
         self.observeEnable = observeEnable
         self.elapseTimeEnable = elapseTimeEnable
-        self.weka = Weka()
-        self.weka.start_jvm()
+       # self.weka = Weka()
+        #self.weka.start_jvm()
 
     def registerInitialState(self, gameState):
         "Initializes beliefs and inference modules"
@@ -103,8 +103,8 @@ class BustersAgent:
         return self.chooseAction(gameState)
 
     def chooseAction(self, gameState):
-        info = self.printLineData(gameState)
-        action = self.weka.predict("./j48.model", info, "./Training.arff")
+       # info = self.printLineData(gameState)
+       # action = self.weka.predict("./j48.model", info, "./Training.arff")
         return action
 
     def printLineData(self, gameState):

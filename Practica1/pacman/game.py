@@ -757,7 +757,7 @@ class Game:
                     self._agentCrash(agentIndex)
                     self.unmute()
                     return
-        self.weka.stop_jvm()
+        #self.weka.stop_jvm()
 
         self.display.finish()
         f.close()
