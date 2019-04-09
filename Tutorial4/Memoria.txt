@@ -1,0 +1,31 @@
+Anotaciones
+Epsilon->cuando vale uno es aleatorio cuando vale 0 policy
+Anotaciones Practica2
+ Proble principal: definir el espacio de estados. No aplicar lo mismo que en gridworld. Hay que encontrar un espacio de estados que resuma toda la informacion
+                    pasar de gameState a q-state va a ser lo mas dificil de la practica (ojo con el state que hay veces que se refiere a uno y otras a otro)
+                    Enviar un correo para lo del espacio de estados.
+                    Pistas: score, distancia a los fantasmas
+ Solo tocar nuesto fichero.
+
+Memoria
+1. Es un tablero 3x4, es decir hay 12 celdas/estados, pero solo hay 11 celdas/estados que puedes alcanzar
+El agente puede ejecutar un minimo tres acciones por cada estado y un maximo de cuatro acciones. Estas acciones pueden ser norte, sur, este, oeste y exit
+TO-DO (Teoria) Si quisiera resolver el problema con un algoritmo de aprendizaje por refuerzo lo que haria sería 
+
+2. Dentro de la clase qlearning Agents nos encontramos los siguientes metodos:
+    - init: sirve para inicializar los valores del algoritmo entre los que estas las acciones, la tabla q y el Epsilon 
+    - readQtable: se utiliza para leer de un fichero la tabla Q para almacenarla en una variable
+    - writeQtable: el metodo inverso al anterior, es decir, se encarga de escribir la tabla Q en un fichero
+    - del: se encarga de llamar al metodo writeQtable y cierra el puntero al fichero
+    - computePosition: te devuelve la fila de la tabla en la que esta ese estado
+    - getQValue: te devuelve el valor de Q en funcion de el estado en el que estes y la accion 
+    - computeValueFromQvalues: 
+    - computeActionFromQvalues: Calcula y devuelve la mejor accion para el estado en el que te encuentras
+    - getAction:
+    - update: metodo que habra que rellenar para actualizar el algoritmo Q-learning
+    - getPolicy: devuelve la mejor accion que hay en la tabla q para un determinado estado
+    - getValue: devuelve el mayor valor de Q para un estado determinado
+
+3. Ejecutar el comando
+4. (Parte de teoria) La informacion que aparece en la ventana del laberinto es el mismo laberinto que teniamos antes pero con la probabilidad de que realice una accion
+    Lo que aparece en la terminal es el estado en el que empieza, la accion que realiza, el estado en el que acaba y la recompensa que obtiene.
