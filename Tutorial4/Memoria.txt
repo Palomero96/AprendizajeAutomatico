@@ -29,3 +29,5 @@ TO-DO (Teoria) Si quisiera resolver el problema con un algoritmo de aprendizaje 
 3. Ejecutar el comando
 4. (Parte de teoria) La informacion que aparece en la ventana del laberinto es el mismo laberinto que teniamos antes pero con la probabilidad de que realice una accion
     Lo que aparece en la terminal es el estado en el que empieza, la accion que realiza, el estado en el que acaba y la recompensa que obtiene.
+5. Realiza movimientos aleatorios porque todavia falta programar el metodo update
+6. Dibujar el MDP
