@@ -27,7 +27,21 @@ TO-DO (Teoria) Si quisiera resolver el problema con un algoritmo de aprendizaje 
     - getValue: devuelve el mayor valor de Q para un estado determinado
 
 3. Ejecutar el comando
-4. (Parte de teoria) La informacion que aparece en la ventana del laberinto es el mismo laberinto que teniamos antes pero con la probabilidad de que realice una accion
+4. TO-DO (Parte de teoria) La informacion que aparece en la ventana del laberinto es el mismo laberinto que teniamos antes pero con la probabilidad de que realice una accion
     Lo que aparece en la terminal es el estado en el que empieza, la accion que realiza, el estado en el que acaba y la recompensa que obtiene.
 5. Realiza movimientos aleatorios porque todavia falta programar el metodo update
-6. Dibujar el MDP
+6. TO-DO Dibujar el MDP
+7. TO-DO Nidea de las politicas optimas
+8. Escribir el metodo update
+9. Lo que sucede es que todos los valores empiezan en 0. A medida que avanzan las ejecuciones se va actualizando el valor Q de los estados terminales.
+    El estado final bueno aumenta hasta que el valor Q llega a 1 y, por el contrario, el estado final malo disminuye hasta llegar a -1
+10. Si nos fijamos en la tabla podemos observar lo que hemos mencionado en el apartado anterior, es decir, los valores de Q que iban aumentando/disminuyendo aparencen en la tabla con esos mismos valores. Los valores que actualizaba eran Q(estadofinalbueno, accionExit) y Q(estadofinalMalo, accionExit)
+
+
+
+Ejercicio 2
+1. Lo que sucede es que existe la posibilidad de que te quieras mover a un sitio pero en vez de moverte ahi te mueves a otro diferente elegido de manera aleatoria.
+Es posible que este agente aprenda pero tardara mas que con un MDP determinista porque habra movimientos que no tendran sentido, es decir, los que hemos mencionado que se pueden producir
+2. Reseteamos los valores del archivo qtable.txt
+3. Ejecutamos el comando.
+4. TO-DO
