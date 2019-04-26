@@ -155,7 +155,6 @@ class QLearningAgent(ReinforcementAgent):
         position = self.computePosition(state)
         action_column = self.actions[action]
         if reward==0:
-
             self.q_table[position][action_column] = (1-self.alpha) * self.q_table[position][action_column] + self.alpha * (reward + self.discount * self.getValue(state))
         if reward==1 or reward==-1:
             self.q_table[position][action_column] = (1-self.alpha) * self.q_table[position][action_column] + self.alpha * (reward + 0)
