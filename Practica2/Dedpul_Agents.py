@@ -23,8 +23,9 @@ from learningAgents import ReinforcementAgent
 #  NOTA: el id debe ser numerico sin el 100 delante
 #  NOTA: nombre en formato "nombre apellidos"
 CREATORS = {
-    333401: 'Alumno1',
-    333402: 'Alumno2'
+    333208: 'David Palomero',
+    332851: 'Rafael Andreo',
+    332835: 'Juan Ortega'
 }
 
 # Flags
@@ -35,7 +36,7 @@ TRACE_BEST_ACTION = True
 TRACE_STATE = True
 
 
-class UC3M_AA_Prac2_Example(BustersAgent,ReinforcementAgent):
+class Dedpul(BustersAgent,ReinforcementAgent):
     """
         UC3M - Campus de Colmenarejo
         Aprendizaje Automatico - 2019
@@ -76,7 +77,7 @@ class UC3M_AA_Prac2_Example(BustersAgent,ReinforcementAgent):
             def registerInitialState(self, gameState):
 
             Ejemplo de parametros:
-            -n 1000 -k 1 -l labAA1.lay -p UC3M_AA_Prac2_Example -a "alpha=0.8,epsilon=0.2,gamma=0.8" -m 2000
+            -n 1000 -k 1 -l labAA1.lay -p Dedpul -a "alpha=0.8,epsilon=0.2,gamma=0.8" -m 2000
 
     """
     def __init__(self, **args):
@@ -110,13 +111,14 @@ class UC3M_AA_Prac2_Example(BustersAgent,ReinforcementAgent):
         # Try to read and then to write to detect problems at the beginning
         self.q_table = self.readQtable()
         self.writeQtable()
-
+        
         # Statictics initialization
         self.stats = {
             'ticks':0,
             'finalScore':0,
             'QTableUpdates':0
         }
+ 
 
 
 
@@ -182,7 +184,7 @@ class UC3M_AA_Prac2_Example(BustersAgent,ReinforcementAgent):
         # para despues filtrar dependiendo de la posicion del fantasma/comida mas cercano 
         # la direccion del stop no la pasaremos porque no es util
         # Este metodo es el getLegalActions que aparece en otros lugares
-        return [Directions.NORTH, Directions.SOUTH, Directions.EAST, Directions.WEST, Directions.STOP]
+        return [Directions.NORTH, Directions.SOUTH, Directions.EAST, Directions.WEST]
 
     def readQtable(self):
         "Read qtable from disc"
@@ -240,59 +242,143 @@ class UC3M_AA_Prac2_Example(BustersAgent,ReinforcementAgent):
 
         # HINT: Calcular el q-estado a partir del gameState es fundamental
         # Metodo principal que haba que modificar junto al uptade
-        gameState.getPacmanPosition()
-        info=["-", "-","-", "-","-", "-","-", "-"]
-        gameState.getWalls()
-        x = gameState.getPacmanPosition()[0]
-        y = gameState.getPacmanPosition()[1]
-        #Comida
-        if(self.hasFood( x-1, y+1)):info[0]="C"
-        if(self.hasFood( x, y+1)):info[1]="C"
-        if(self.hasFood( x+1, y+1)):info[2]="C"
-        if(self.hasFood( x-1, y)):info[3]="C"
-        if(self.hasFood( x+1, y)):info[4]="C"
-        if(self.hasFood( x-1, y-1)):info[5]="C"
-        if(self.hasFood( x, y-1)):info[6]="C"
-        if(self.hasFood( x+1, y-1)):info[7]="C"                            
-        #Paredes
-        if(self.hasWall( x-1, y+1)):info[0]="M"
-        if(self.hasWall( x, y+1)):info[1]="M"
-        if(self.hasWall( x+1, y+1)):info[2]="M"
-        if(self.hasWall( x-1, y)):info[3]="M"
-        if(self.hasWall( x+1, y)):info[4]="M"
-        if(self.hasWall( x-1, y-1)):info[5]="M"
-        if(self.hasWall( x, y-1)):info[6]="M"
-        if(self.hasWall( x+1, y-1)):info[7]="M"
+        Pacman= list()
+        #Inicializamos el objeto distancias
+        self.distancer = Distancer(gameState.data.layout)
+        for pos in gameState.getPacmanPosition():
+            Pacman.append(pos)
+        info=["-","-","-", "-","-", "-","-", "-"]                 
+        #Paredes y Comida
+        if(gameState.hasWall( Pacman[0]-1, Pacman[1]+1)):
+            info[0]="M"
+        else:
+            if(gameState.hasFood( Pacman[0]-1, Pacman[1]+1)):info[0]="C"
+        if(gameState.hasWall( Pacman[0], Pacman[1]+1)):
+            info[1]="M"
+        else:
+            if(gameState.hasFood( Pacman[0], Pacman[1]+1)):info[1]="C"
+        if(gameState.hasWall( Pacman[0]+1, Pacman[1]+1)):
+            info[2]="M"
+        else:
+            if(gameState.hasFood( Pacman[0]+1, Pacman[1]+1)):info[2]="C"
+        if(gameState.hasWall( Pacman[0]-1, Pacman[1])):
+            info[3]="M"
+        else:
+            if(gameState.hasFood( Pacman[0]-1,Pacman[1])):info[3]="C"
+        if(gameState.hasWall( Pacman[0]+1, Pacman[1])):
+            info[4]="M"
+        else:
+            if(gameState.hasFood( Pacman[0]+1, Pacman[1])):info[4]="C"
+        if(gameState.hasWall( Pacman[0]-1, Pacman[1]-1)):
+            info[5]="M"
+        else:
+            if(gameState.hasFood( Pacman[0]-1, Pacman[1]-1)):info[5]="C"
+        if(gameState.hasWall( Pacman[0],Pacman[1]-1)):
+            info[6]="M"
+        else:
+             if(gameState.hasFood( Pacman[0], Pacman[1]-1)):info[6]="C"
+        if(gameState.hasWall( Pacman[0]+1, Pacman[1]-1)):
+            info[7]="M"
+        else:
+            if(gameState.hasFood( Pacman[0]+1, Pacman[1]-1)):info[7]="C"
+
         #Fantasmas
-        for fantasma in self.getGhostPositions:
-            if(fantasma[0]==x-1 and fantasma[1]==y+1):
+        for fantasma in gameState.getGhostPositions():
+            if(fantasma[0]==Pacman[0]-1 and fantasma[1]==Pacman[1]+1):
                 info[0]="F"
                 break
-            if(fantasma[0]==x and fantasma[1]==y+1):
+            if(fantasma[0]==Pacman[0] and fantasma[1]==Pacman[1]+1):
                 info[1]="F"
                 break
-            if(fantasma[0]==x+1 and fantasma[1]==y+1):
+            if(fantasma[0]==Pacman[0]+1 and fantasma[1]==Pacman[1]+1):
                 info[2]="F"
                 break
-            if(fantasma[0]==x-1 and fantasma[1]==y):
+            if(fantasma[0]==Pacman[0]-1 and fantasma[1]==Pacman[1]):
                 info[3]="F"
                 break
-            if(fantasma[0]==x+1 and fantasma[1]==y):
+            if(fantasma[0]==Pacman[0]+1 and fantasma[1]==Pacman[1]):
                 info[4]="F"
                 break
-            if(fantasma[0]==x-1 and fantasma[1]==y-1):
+            if(fantasma[0]==Pacman[0]-1 and fantasma[1]==Pacman[1]-1):
                 info[5]="F"
                 break
-            if(fantasma[0]==x and fantasma[1]==y-1):
+            if(fantasma[0]==Pacman[0] and fantasma[1]==Pacman[1]-1):
                 info[6]="F"
                 break
-            if(fantasma[0]==x+1 and fantasma[1]==y-1):
+            if(fantasma[0]==Pacman[0]+1 and fantasma[1]==Pacman[1]-1):
                 info[7]="F"
-                break    
-            
+                break
+
+        #Distancer.getDistance()    
+        #Obtenemos el fantasma mas cercano
+        fantasmas = list(gameState.getLivingGhosts())
+        vivos = 0
+        for fan in fantasmas:
+            if fan is True:
+                vivos=vivos+1
+
+        fantasmasvivos=list()
+        distancia=list()
+        fantasmasvivospos=list()
+        if (vivos>0):
+            #Buscamos los fantasmas que estan vivos
+            for x in range(1,gameState.getNumAgents()):
+                if fantasmas[x] is True:
+                    fantasmasvivos.append(fantasmas[x])
+                    distancia.append(self.distancer.getDistance((Pacman[0],Pacman[1]), (gameState.getGhostPositions()[x-1][0],gameState.getGhostPositions()[x-1][1]) ))
+                    fantasmasvivospos.append(gameState.getGhostPositions()[x-1])
+
+            #Obtenemos el fantasma mas cercano
+            fantasma = distancia.index(min(distancia))
+            if(gameState.getNumFood()>0):
+                minDistance = 900000
+                for i in range(gameState.data.layout.width):
+                    for j in range(gameState.data.layout.height):
+                        if gameState.hasFood(i, j):
+                            foodPosition = i, j
+                            distanceComida = self.distancer.getDistance((Pacman[0],Pacman[1]), (foodPosition[0],foodPosition[1]))
+                            print ("Manhatan ", util.manhattanDistance(Pacman, foodPosition))
+                            print ("Distancer ", distanceComida)
+                            if distanceComida < minDistance:
+                                minDistance = distanceComida
+                                comidacercana=foodPosition
+                
+                if (distanceComida>(min(distancia))):
+                    diffx= comidacercana[0] - Pacman[0]
+                    diffy= comidacercana[1] - Pacman[1]
+                    info.append(distanceComida)
+                else:
+                    diffx= fantasmasvivospos[fantasma][0] - Pacman[0]
+                    diffy=fantasmasvivospos[fantasma][1] - Pacman[1]
+                    info.append(str(min(distancia)))
         
+                if (diffy>0):
+                    if(diffx>0):info.append("ArrDer")       
+                    if(diffx<0):info.append("ArrIzq")
+                    if(diffx==0):info.append("Arr")           
+                else:
+                    if(diffx>0):info.append("AbaDer")       
+                    if(diffx<0):info.append("AbaIzq")
+                    if(diffx==0):info.append("Aba") 
+                info.append(vivos)
+                info.append(gameState.getNumFood())
+            else:
+                diffx= fantasmasvivospos[fantasma][0] - Pacman[0]
+                diffy=fantasmasvivospos[fantasma][1] - Pacman[1]
+                info.append(str(min(distancia)))
+                if (diffy>0):
+                    if(diffx>0):info.append("ArrDer")       
+                    if(diffx<0):info.append("ArrIzq")
+                    if(diffx==0):info.append("Arr")           
+                else:
+                    if(diffx>0):info.append("AbaDer")       
+                    if(diffx<0):info.append("AbaIzq")
+                    if(diffx==0):info.append("Aba") 
+                info.append(vivos)
+            
         key_state=''.join(str(e) for e in info)
-        #Cosas que añadir:
+
+        #Cosas que anadir:
         # - Posicion relativa fantasma/comida
         # - Distancia a esto
         return key_state
@@ -318,7 +404,7 @@ class UC3M_AA_Prac2_Example(BustersAgent,ReinforcementAgent):
         :param action: a string with an action 'North', 'South'...
         :return: float with the value
         """
-        #Si no tenemos en cuenta la direccion del stop debemos de modificar el metodo para qeu solo añada 4 columnas
+        #Si no tenemos en cuenta la direccion del stop debemos de modificar el metodo para qeu solo anada 4 columnas
 
         # if not in table, init to 0
         if state not in self.q_table:
@@ -457,10 +543,13 @@ class UC3M_AA_Prac2_Example(BustersAgent,ReinforcementAgent):
         index=self.getActionIndex(action)
 
         #Hay que modificar algunas cosas para que funcione porque los metodos no son los mismos que 
-        if self.isWin() or self.isLose():
-             self.q_table[q_state][index] = (1-self.alpha) * self.q_table[q_state][index] + self.alpha * (reward + 0)
-        else:
-            self.q_table[q_state][index] = (1-self.alpha) * self.q_table[q_state][index] + self.alpha * (reward + self.discount * self.getQValue(state, action))
+        #if self.isWin() or self.isLose():
+         #    self.q_table[q_state][index] = (1-self.alpha) * self.q_table[q_state][index] + self.alpha * (reward + 0)
+        #else:
+        if q_state not in self.q_table:
+            self.q_table[q_state]=[float(0), float(0), float(0), float(0), float(0)]
+        
+        self.q_table[q_state][index] = (1-self.alpha) * self.q_table[q_state][index] + self.alpha * (reward + self.discount * self.getValue(q_nextState))
         
         if TRACE_STATE: self.trace("Update State ["+ str(q_state) +"]")
         if TRACE_UPDATE: self.trace("Update State [" + str(q_state) + "][" + action + "]=>[" + str(q_nextState) + "] r=" + str(reward))

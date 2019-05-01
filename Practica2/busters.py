@@ -291,9 +291,7 @@ class GameState:
         return self.data == other.data
 
     def __hash__( self ):
-        """
-        Allows states to be keys of dictionaries.
-        """
+        
         return hash( str( self ) )
 
     def __str__( self ):
