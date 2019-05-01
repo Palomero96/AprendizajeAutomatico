@@ -147,7 +147,7 @@ class UC3M_AA_Prac2_Example(BustersAgent,ReinforcementAgent):
         :return: nothing
         HINT: Create the minimum lines to allow readQTable not to crash the first time
         """
-
+        # Cuantos estados es necesario inicializar? con el primero basta?
         f = open(self.getQTableFileName(), "w")
         f.writelines("A 0.0 0.0 0.0 0.0 0.0")
         f.flush()
@@ -178,13 +178,18 @@ class UC3M_AA_Prac2_Example(BustersAgent,ReinforcementAgent):
         :param state: string con un q-estado
         :return: lista de strings con las posibles direcciones ['North','South'...]
         """
-
+        #Es posible que queramos ver si son acciones legales
+        # para despues filtrar dependiendo de la posicion del fantasma/comida mas cercano 
+        # la direccion del stop no la pasaremos porque no es util
+        # Este metodo es el getLegalActions que aparece en otros lugares
         return [Directions.NORTH, Directions.SOUTH, Directions.EAST, Directions.WEST, Directions.STOP]
 
     def readQtable(self):
         "Read qtable from disc"
 
-        # HINT: En esta funcion hay que implementar como se lee el fichero donde se almacena la tabla Q
+        # HINT: En esta funcion hay que implementar como se lee el fichero donde se almacena la tabla Q 
+        # Creo que no hara falta tocar esta funcion
+        
         table = self.table_file.readlines()
         q_table = {}
 
@@ -202,6 +207,7 @@ class UC3M_AA_Prac2_Example(BustersAgent,ReinforcementAgent):
         "Write qtable to disc"
 
         # HINT: En esta funcion hay que implementar como se escribe el fichero donde se almacena la tabla Q
+        # Creo que no hara falta tocar esta funcion
 
         # Si alpha es cero, no vamos a tocar la tabla Q
         if self.alpha == 0: return
@@ -233,8 +239,62 @@ class UC3M_AA_Prac2_Example(BustersAgent,ReinforcementAgent):
         """
 
         # HINT: Calcular el q-estado a partir del gameState es fundamental
-        key_state = "A"
-
+        # Metodo principal que haba que modificar junto al uptade
+        gameState.getPacmanPosition()
+        info=["-", "-","-", "-","-", "-","-", "-"]
+        gameState.getWalls()
+        x = gameState.getPacmanPosition()[0]
+        y = gameState.getPacmanPosition()[1]
+        #Comida
+        if(self.hasFood( x-1, y+1)):info[0]="C"
+        if(self.hasFood( x, y+1)):info[1]="C"
+        if(self.hasFood( x+1, y+1)):info[2]="C"
+        if(self.hasFood( x-1, y)):info[3]="C"
+        if(self.hasFood( x+1, y)):info[4]="C"
+        if(self.hasFood( x-1, y-1)):info[5]="C"
+        if(self.hasFood( x, y-1)):info[6]="C"
+        if(self.hasFood( x+1, y-1)):info[7]="C"                            
+        #Paredes
+        if(self.hasWall( x-1, y+1)):info[0]="M"
+        if(self.hasWall( x, y+1)):info[1]="M"
+        if(self.hasWall( x+1, y+1)):info[2]="M"
+        if(self.hasWall( x-1, y)):info[3]="M"
+        if(self.hasWall( x+1, y)):info[4]="M"
+        if(self.hasWall( x-1, y-1)):info[5]="M"
+        if(self.hasWall( x, y-1)):info[6]="M"
+        if(self.hasWall( x+1, y-1)):info[7]="M"
+        #Fantasmas
+        for fantasma in self.getGhostPositions:
+            if(fantasma[0]==x-1 and fantasma[1]==y+1):
+                info[0]="F"
+                break
+            if(fantasma[0]==x and fantasma[1]==y+1):
+                info[1]="F"
+                break
+            if(fantasma[0]==x+1 and fantasma[1]==y+1):
+                info[2]="F"
+                break
+            if(fantasma[0]==x-1 and fantasma[1]==y):
+                info[3]="F"
+                break
+            if(fantasma[0]==x+1 and fantasma[1]==y):
+                info[4]="F"
+                break
+            if(fantasma[0]==x-1 and fantasma[1]==y-1):
+                info[5]="F"
+                break
+            if(fantasma[0]==x and fantasma[1]==y-1):
+                info[6]="F"
+                break
+            if(fantasma[0]==x+1 and fantasma[1]==y-1):
+                info[7]="F"
+                break    
+            
+        
+        key_state=''.join(str(e) for e in info)
+        #Cosas que añadir:
+        # - Posicion relativa fantasma/comida
+        # - Distancia a esto
         return key_state
 
     def getActionIndex(self, action):
@@ -258,6 +318,7 @@ class UC3M_AA_Prac2_Example(BustersAgent,ReinforcementAgent):
         :param action: a string with an action 'North', 'South'...
         :return: float with the value
         """
+        #Si no tenemos en cuenta la direccion del stop debemos de modificar el metodo para qeu solo añada 4 columnas
 
         # if not in table, init to 0
         if state not in self.q_table:
@@ -278,6 +339,7 @@ class UC3M_AA_Prac2_Example(BustersAgent,ReinforcementAgent):
         :param action: string con una accion 'North' 'South'
         :param value: float con el valor de Q(state,action)
         """
+        # Creo que no hara falta tocar esta funcion
         returnValue = float(0)
         if state in self.q_table:
             returnValue = value
@@ -294,7 +356,7 @@ class UC3M_AA_Prac2_Example(BustersAgent,ReinforcementAgent):
         :param state: string with q-state
         :return: float con V(state)
         """
-
+        # Creo que no hara falta tocar esta funcion
         legalActions = self.getLegalActions(state)
 
         if len(legalActions) == 0:
@@ -315,7 +377,7 @@ class UC3M_AA_Prac2_Example(BustersAgent,ReinforcementAgent):
         :param state: string with q-state
         :return: string con accion 'North' 'South'
         """
-
+        # Creo que no hara falta tocar esta funcion
         # legalActions for q-learning (not pacman)
         legalActions = self.getLegalActions(state)
         if len(legalActions) == 0:
@@ -345,7 +407,7 @@ class UC3M_AA_Prac2_Example(BustersAgent,ReinforcementAgent):
         :param state: string with q-state
         :return: string con accion 'North' 'South'
         """
-
+        # Creo que no hara falta tocar esta funcion
         # Pick Action
         legalActions = self.getLegalActions(state)
         action = None
@@ -385,12 +447,21 @@ class UC3M_AA_Prac2_Example(BustersAgent,ReinforcementAgent):
 
             "*** YOUR CODE HERE ***"
         """
-
-
+        #Estado final cuando no queda ningun fantasma vivo
+        #self.gameOver
+        # self.isWin or self.isLose
         # Reemplazar las asignaciones siguientes por su valor adecuado
-        q_state = ""
-        q_nextState = ""
+        #Es posible que haya que llamar a la funcion
+        q_state = self.computeQLearningState(state)
+        q_nextState = self.computeQLearningState(nextState)
+        index=self.getActionIndex(action)
 
+        #Hay que modificar algunas cosas para que funcione porque los metodos no son los mismos que 
+        if self.isWin() or self.isLose():
+             self.q_table[q_state][index] = (1-self.alpha) * self.q_table[q_state][index] + self.alpha * (reward + 0)
+        else:
+            self.q_table[q_state][index] = (1-self.alpha) * self.q_table[q_state][index] + self.alpha * (reward + self.discount * self.getQValue(state, action))
+        
         if TRACE_STATE: self.trace("Update State ["+ str(q_state) +"]")
         if TRACE_UPDATE: self.trace("Update State [" + str(q_state) + "][" + action + "]=>[" + str(q_nextState) + "] r=" + str(reward))
 
