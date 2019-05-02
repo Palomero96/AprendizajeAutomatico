@@ -316,10 +316,16 @@ class Dedpul(BustersAgent,ReinforcementAgent):
         for fan in fantasmas:
             if fan is True:
                 vivos=vivos+1
-
+        
         fantasmasvivos=list()
         distancia=list()
         fantasmasvivospos=list()
+        comidasrestantes=0
+        for g in gameState.getFood():
+            for f in g:
+                if(f):
+                    comidasrestantes=comidasrestantes+1
+
         if (vivos>0):
             #Buscamos los fantasmas que estan vivos
             for x in range(1,gameState.getNumAgents()):
@@ -330,15 +336,13 @@ class Dedpul(BustersAgent,ReinforcementAgent):
 
             #Obtenemos el fantasma mas cercano
             fantasma = distancia.index(min(distancia))
-            if(gameState.getNumFood()>0):
+            if(comidasrestantes>0):
                 minDistance = 900000
                 for i in range(gameState.data.layout.width):
                     for j in range(gameState.data.layout.height):
                         if gameState.hasFood(i, j):
                             foodPosition = i, j
                             distanceComida = self.distancer.getDistance((Pacman[0],Pacman[1]), (foodPosition[0],foodPosition[1]))
-                            print ("Manhatan ", util.manhattanDistance(Pacman, foodPosition))
-                            print ("Distancer ", distanceComida)
                             if distanceComida < minDistance:
                                 minDistance = distanceComida
                                 comidacercana=foodPosition
@@ -361,7 +365,7 @@ class Dedpul(BustersAgent,ReinforcementAgent):
                     if(diffx<0):info.append("AbaIzq")
                     if(diffx==0):info.append("Aba") 
                 info.append(vivos)
-                info.append(gameState.getNumFood())
+                info.append(comidasrestantes)
             else:
                 diffx= fantasmasvivospos[fantasma][0] - Pacman[0]
                 diffy=fantasmasvivospos[fantasma][1] - Pacman[1]
