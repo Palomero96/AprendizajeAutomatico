@@ -29,11 +29,11 @@ CREATORS = {
 }
 
 # Flags
-TRACE_SHOW_QTABLE = True
-TRACE_ACTION_DECISION = True
-TRACE_UPDATE = True
-TRACE_BEST_ACTION = True
-TRACE_STATE = True
+TRACE_SHOW_QTABLE = False
+TRACE_ACTION_DECISION = False
+TRACE_UPDATE = False
+TRACE_BEST_ACTION = False
+TRACE_STATE = False
 
 
 class Dedpul(BustersAgent,ReinforcementAgent):
@@ -321,6 +321,13 @@ class Dedpul(BustersAgent,ReinforcementAgent):
         distancia=list()
         fantasmasvivospos=list()
         comidasrestantes=0
+        numerodeparedes=0
+        for g in gameState.getWalls():
+            for f in g:
+                if(f):
+                    numerodeparedes=numerodeparedes+1
+
+        info.append(numerodeparedes)            
         for g in gameState.getFood():
             for f in g:
                 if(f):
@@ -381,10 +388,6 @@ class Dedpul(BustersAgent,ReinforcementAgent):
                 info.append(vivos)
             
         key_state=''.join(str(e) for e in info)
-
-        #Cosas que anadir:
-        # - Posicion relativa fantasma/comida
-        # - Distancia a esto
         return key_state
 
     def getActionIndex(self, action):

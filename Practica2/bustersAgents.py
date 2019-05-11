@@ -208,6 +208,10 @@ class BasicAgentAA(BustersAgent):
         BustersAgent.registerInitialState(self, gameState)
         self.distancer = Distancer(gameState.data.layout, False)
         self.countActions = 0
+        self.Random=False #Boolean para controlar cuando es random
+        self.fantasma=0
+        self.pasosaleatorios=0
+        self.movaleatorio=0
         
     ''' Example of counting something'''
     def countFood(self, gameState):
@@ -263,11 +267,57 @@ class BasicAgentAA(BustersAgent):
     def chooseAction(self, gameState):
         self.countActions = self.countActions + 1
         self.printInfo(gameState)
+        
+        #Obtenemos el fantasma mas cercano
+        fantasmas = list(gameState.getLivingGhosts())
+        fantasmasvivos=list()
+        distancia=list()
+        fantasmasvivospos=list()
+        #Buscamos los fantasmas que estan vivos
+        for x in range(0,gameState.getNumAgents()):
+            if fantasmas[x] is True:
+                fantasmasvivos.append(fantasmas[x])
+                distancia.append(gameState.data.ghostDistances[x-1])
+                fantasmasvivospos.append(gameState.getGhostPositions()[x-1])
+        #Obtenemos el fantasma mas cercano
+        fantasma = distancia.index(min(distancia))  
         move = Directions.STOP
         legal = gameState.getLegalActions(0) ##Legal position from the pacman
-        move_random = random.randint(0, 3)
-        if   ( move_random == 0 ) and Directions.WEST in legal:  move = Directions.WEST
-        if   ( move_random == 1 ) and Directions.EAST in legal: move = Directions.EAST
-        if   ( move_random == 2 ) and Directions.NORTH in legal:   move = Directions.NORTH
-        if   ( move_random == 3 ) and Directions.SOUTH in legal: move = Directions.SOUTH
+        distancias=[0,0,0,0]
+        
+        if  Directions.WEST in legal: 
+            distancias[0] = util.manhattanDistance(fantasmasvivospos[fantasma], (gameState.getPacmanPosition()[0]-1,gameState.getPacmanPosition()[1]))
+        if  Directions.EAST in legal:
+            distancias[1] = util.manhattanDistance(fantasmasvivospos[fantasma], (gameState.getPacmanPosition()[0]+1,gameState.getPacmanPosition()[1]))
+        if  Directions.NORTH in legal:
+            distancias[2] = util.manhattanDistance(fantasmasvivospos[fantasma], (gameState.getPacmanPosition()[0],gameState.getPacmanPosition()[1]+1))  
+        if Directions.SOUTH in legal:
+            distancias[3] = util.manhattanDistance(fantasmasvivospos[fantasma], (gameState.getPacmanPosition()[0],gameState.getPacmanPosition()[1]-1))
+        #Obtenemos la distancia minima
+        distancianew = distancias.index(min(distancias))
+        #Asignamos el movimiento en funcion de la distancia minima obtenida
+        if distancianew ==0: 
+            move = Directions.WEST
+        if distancianew ==1: 
+            move = Directions.EAST
+        if distancianew ==2: 
+            move = Directions.NORTH
+        if distancianew ==3: 
+            move = Directions.SOUTH
+        #Cuando encontremos un movimiento ilegal nos empezaremos a mover de forma aleatoria hasta el final del juego
+        if move not in legal:
+            self.Random=True
+        if self.Random is True:
+            self.movaleatorio=1
+            self.pasosaleatorios+=1
+            move= Directions.STOP
+            move_random = random.randint(0, 3)
+            if   ( move_random == 0 ) and Directions.WEST in legal:  move = Directions.WEST
+            if   ( move_random == 1 ) and Directions.EAST in legal: move = Directions.EAST
+            if   ( move_random == 2 ) and Directions.NORTH in legal:   move = Directions.NORTH
+            if   ( move_random == 3 ) and Directions.SOUTH in legal: move = Directions.SOUTH 
+            if self.pasosaleatorios==8:
+                self.pasosaleatorios=0
+                self.movaleatorio=0
+                self.Random=False
         return move
