@@ -1,2 +1,2 @@
-# AprendizajeAutomatico
-Practicas y tutoriales de la asignatura de  Aprendizaje Automatico (Machine Learning)
+# Machine learning subject
+Practices and tutorials of the Machine Learning subject 
